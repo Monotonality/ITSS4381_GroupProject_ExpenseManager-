@@ -1,31 +1,159 @@
-# ITSS 4381 Group Project: Expense Manager Web App
+# 💰 Expense Tracker Web App
 
-## Overview
-[cite_start]This project is an AI-assisted web application that extends the Part 1 command-line expense manager into a full web-based system[cite: 4]. [cite_start]The application was created using vibe coding techniques and AI tools like Cursor[cite: 6]. [cite_start]The goal was to quickly build a working web app that leverages what we learned about prompt engineering and AI-assisted development[cite: 6].
-
-The application allows users to track and manage their personal expenses through a simple, interactive web interface.
-
-## Project Structure
-* **`app.py`**: The main Python file containing the web application logic (e.g., using a framework like Flask).
-* **`expenses.csv`**: The data file where all transaction information is stored.
-* **`templates/`**: A directory containing the HTML files for the web application's frontend.
-* **`static/`**: A directory for static files such as CSS stylesheets and JavaScript.
-* [cite_start]**`prd.md`**: The Product Requirements Document outlining the app's goals, users, and key features[cite: 11].
-* **`GROUP PROJECT PT 1 - 8 (1).py`**: The original Part 1 command-line application.
+A simple and intuitive expense tracking web application built with Streamlit. Track your expenses, view transaction history, and analyze spending patterns with interactive charts.
 
 ## Features
-The web application includes the following features:
-* [cite_start]**Add Expense**: An interactive form to submit new expenses with details like name, amount, date, and category[cite: 12].
-* **View Expenses**: A dynamic display of all recorded transactions.
-* **Modify Expense**: The ability to select and update the details of an existing transaction.
-* **Expense Statistics**: Tools to view summaries of spending, such as total expenses by category or average daily spending.
 
-## How to Run the Application
-1. **Clone the repository**: `git clone https://github.com/yourusername/ITSS4381_GroupProject_ExpenseManager.git`
-2. **Navigate to the project directory**: `cd ITSS4381_GroupProject_ExpenseManager`
-3. **Install dependencies**: (e.g., `pip install Flask`)
-4. **Run the application**: `python app.py`
-5. [cite_start]**Open in browser**: The application will be accessible in your web browser at `http://127.0.0.1:5000` (or the specified host and port)[cite: 13].
+### 🆕 Add Transactions
+- Easy-to-use form for adding new expenses
+- Input validation (non-empty names, positive amounts)
+- Date picker with default to today
+- Category selection (Food, Transport, Other)
+- Automatic unique ID generation for each transaction
 
-## Vibe Coding Process
-[cite_start]This project was built with the assistance of AI tools[cite: 10]. [cite_start]The development process involved using specific prompts to generate boilerplate code for the web framework, design the HTML forms, and connect the frontend to the backend data logic[cite: 21]. [cite_start]We focused on iterating with the AI to achieve a working, functional application quickly, as the project timeline was one week[cite: 7, 21].
+### 📊 View Transactions
+- Complete transaction history in a sortable table
+- Quick metrics: total transactions, total spent, average transaction
+- Data automatically loads from persistent CSV storage
+
+### 📈 Statistics & Analytics
+- Total spending overview
+- Interactive bar chart showing spending by category
+- Category breakdown with percentages
+- Recent transactions summary
+
+## Installation & Setup
+
+### Prerequisites
+- Python 3.7 or higher
+- pip package manager
+
+### Quick Start
+
+1. **Clone or download the project files:**
+   ```bash
+   # You should have these files:
+   # - app.py (main application)
+   # - requirements.txt (dependencies)
+   # - README.md (this file)
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the application:**
+   ```bash
+   streamlit run app.py
+   ```
+
+4. **Open in browser:**
+   - The app will automatically open in your default browser
+   - If not, navigate to: `http://localhost:8501`
+
+## Usage Guide
+
+### Adding Your First Transaction
+1. Select **"Add Transaction"** from the sidebar
+2. Fill in the expense details:
+   - **Expense Name**: Description of the expense (e.g., "Coffee at Starbucks")
+   - **Amount**: Cost in dollars (must be > 0)
+   - **Date**: When the expense occurred (defaults to today)
+   - **Category**: Choose from Food, Transport, or Other
+3. Click **"Add Transaction"**
+4. See confirmation and celebration balloons! 🎉
+
+### Viewing Your Expenses
+1. Select **"View Transactions"** from the sidebar
+2. See your complete expense history
+3. Review summary metrics at the top
+4. Transactions are sorted by date (newest first)
+
+### Analyzing Spending Patterns
+1. Select **"Statistics"** from the sidebar
+2. View your total spending amount
+3. Analyze spending by category with the interactive bar chart
+4. Check the category breakdown table for detailed percentages
+5. Review recent transaction activity
+
+## Data Storage
+
+- All data is automatically saved to `expenses.csv`
+- The CSV file is created automatically when you first run the app
+- Data persists between app sessions
+- You can manually edit the CSV file if needed (be careful with the format!)
+
+## File Structure
+
+```
+expense-tracker/
+│
+├── app.py              # Main Streamlit application
+├── requirements.txt    # Python dependencies
+├── README.md          # This documentation
+└── expenses.csv       # Auto-generated data file (created when you add first transaction)
+```
+
+## Technical Details
+
+### Dependencies
+- **Streamlit**: Web app framework
+- **Pandas**: Data manipulation and CSV handling
+- **Plotly**: Interactive charts and visualizations
+- **UUID**: Unique transaction ID generation
+
+### Data Format
+The CSV file contains the following columns:
+- `ID`: Unique identifier for each transaction
+- `Name`: Description of the expense
+- `Amount`: Cost in dollars (float)
+- `Date`: Transaction date (YYYY-MM-DD format)
+- `Category`: Expense category (Food/Transport/Other)
+
+## Troubleshooting
+
+### App won't start?
+- Make sure all dependencies are installed: `pip install -r requirements.txt`
+- Check Python version: `python --version` (should be 3.7+)
+- Try: `python -m streamlit run app.py`
+
+### Data not saving?
+- Check file permissions in the current directory
+- Ensure `expenses.csv` is not open in another program
+- Look for error messages in the terminal
+
+### Charts not displaying?
+- Ensure Plotly is installed: `pip install plotly`
+- Clear browser cache and refresh the page
+
+## Customization
+
+### Adding New Categories
+Edit the `CATEGORIES` list in `app.py`:
+```python
+CATEGORIES = ["Food", "Transport", "Entertainment", "Shopping", "Other"]
+```
+
+### Changing CSV File Location
+Modify the `CSV_FILE` variable in `app.py`:
+```python
+CSV_FILE = "path/to/your/expenses.csv"
+```
+
+## Contributing
+
+Feel free to enhance this app by:
+- Adding new expense categories
+- Implementing data export features
+- Adding more chart types
+- Improving the UI/UX
+- Adding data filtering and search
+
+## License
+
+This project is open source and available under the MIT License.
+
+---
+
+**Happy expense tracking! 💰📊**
