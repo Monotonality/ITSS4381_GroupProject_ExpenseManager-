@@ -6,7 +6,7 @@ import plotly.express as px
 
 # Constants
 CSV_FILE = "expenses.csv"
-CATEGORIES = ["Food", "Transport", "Other"]
+CATEGORIES = ["Food", "Transport", "Shopping", "Grocery", "Other"]
 
 def initialize_csv():
     """Create CSV file with headers if it doesn't exist"""
@@ -152,6 +152,9 @@ def statistics_page():
         st.info("No transactions found. Add some transactions to see statistics!")
         return
     
+    # Convert Date to datetime for better analysis
+    df['Date'] = pd.to_datetime(df['Date'])
+    
     # Total spending metric
     total_spent = df['Amount'].sum()
     st.metric("💸 Total Amount Spent", f"${total_spent:.2f}")
@@ -202,8 +205,56 @@ def statistics_page():
     
     st.divider()
     
-    # Additional statistics
+    # Time-based statistics
+    st.subheader("📅 Time-based Statistics")
+    
+    # Daily statistics
+    daily_stats = df.groupby(df['Date'].dt.date).agg({
+        'Amount': ['sum', 'mean', 'count', 'min', 'max']
+    }).round(2)
+    daily_stats.columns = ['Total', 'Average', 'Count', 'Min', 'Max']
+    daily_stats = daily_stats.reset_index()
+    
     col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.metric("📅 Daily Average", f"${daily_stats['Total'].mean():.2f}")
+        st.metric("📅 Daily Highest", f"${daily_stats['Total'].max():.2f}")
+        st.metric("📅 Daily Lowest", f"${daily_stats['Total'].min():.2f}")
+    
+    # Weekly statistics
+    df['Week'] = df['Date'].dt.isocalendar().week
+    df['Year'] = df['Date'].dt.year
+    weekly_stats = df.groupby(['Year', 'Week']).agg({
+        'Amount': ['sum', 'mean', 'count', 'min', 'max']
+    }).round(2)
+    weekly_stats.columns = ['Total', 'Average', 'Count', 'Min', 'Max']
+    weekly_stats = weekly_stats.reset_index()
+    
+    with col2:
+        st.metric("📆 Weekly Average", f"${weekly_stats['Total'].mean():.2f}")
+        st.metric("📆 Weekly Highest", f"${weekly_stats['Total'].max():.2f}")
+        st.metric("📆 Weekly Lowest", f"${weekly_stats['Total'].min():.2f}")
+    
+    # Monthly statistics
+    df['Month'] = df['Date'].dt.month
+    monthly_stats = df.groupby(['Year', 'Month']).agg({
+        'Amount': ['sum', 'mean', 'count', 'min', 'max']
+    }).round(2)
+    monthly_stats.columns = ['Total', 'Average', 'Count', 'Min', 'Max']
+    monthly_stats = monthly_stats.reset_index()
+    
+    with col3:
+        st.metric("📊 Monthly Average", f"${monthly_stats['Total'].mean():.2f}")
+        st.metric("📊 Monthly Highest", f"${monthly_stats['Total'].max():.2f}")
+        st.metric("📊 Monthly Lowest", f"${monthly_stats['Total'].min():.2f}")
+    
+    st.divider()
+    
+    # Overall transaction statistics
+    st.subheader("💰 Overall Transaction Statistics")
+    
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         avg_transaction = df['Amount'].mean()
@@ -214,6 +265,10 @@ def statistics_page():
         st.metric("🔺 Largest Transaction", f"${max_transaction:.2f}")
     
     with col3:
+        min_transaction = df['Amount'].min()
+        st.metric("🔻 Smallest Transaction", f"${min_transaction:.2f}")
+    
+    with col4:
         transaction_count = len(df)
         st.metric("🧾 Total Transactions", transaction_count)
 
